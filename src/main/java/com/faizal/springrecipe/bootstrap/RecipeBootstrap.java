@@ -8,6 +8,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
@@ -21,9 +22,12 @@ import com.faizal.springrecipe.repositories.CategoryRepository;
 import com.faizal.springrecipe.repositories.RecipeRepository;
 import com.faizal.springrecipe.repositories.UnitOfMeasureRepository;
 
-@Component
-public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@Component
+@Profile("default")
+public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 	private final CategoryRepository categoryRepository;
 	private final RecipeRepository recipeRepository;
 	private final UnitOfMeasureRepository unitOfMeasureRepository;
@@ -39,6 +43,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 	@Transactional
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		recipeRepository.saveAll(getRecipes());
+		log.debug("Loading Bootstrap Data");
 	}
 
 	private List<Recipe> getRecipes() {
@@ -152,6 +157,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 		guacRecipe.getCategories().add(americanCategory);
 		guacRecipe.getCategories().add(mexicanCategory);
 
+		guacRecipe.setUrl("http://www.simplyrecipes.com/recipes/perfect_guacamole/");
+		guacRecipe.setServings(4);
+		guacRecipe.setSource("Simply Recipes");
+
 		// add to return list
 		recipes.add(guacRecipe);
 
@@ -207,6 +216,10 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
 
 		tacosRecipe.getCategories().add(americanCategory);
 		tacosRecipe.getCategories().add(mexicanCategory);
+
+		tacosRecipe.setUrl("http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/");
+		tacosRecipe.setServings(4);
+		tacosRecipe.setSource("Simply Recipes");
 
 		recipes.add(tacosRecipe);
 		return recipes;

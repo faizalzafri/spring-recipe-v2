@@ -100,10 +100,10 @@
 									<p th:text="${(recipe.source) + ' min'}">30 min</p>
 								</div>
 								<div class="col-md-3">
-									<h5 th:text="${recipe.url}">URL:</h5>
+									<h5>URL:</h5>
 								</div>
 								<div class="col-md-3">
-									<p>http://www.example.com</p>
+									<p th:text="${recipe.url}">http://www.example.com</p>
 								</div>
 							</div>
 						</div>
