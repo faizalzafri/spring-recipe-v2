@@ -97,7 +97,7 @@
 										<label>Difficulty:</label> <select class="form-control"
 											th:field="*{difficulty}">
 											<option
-												th:each="difficultyValue : ${T(com.faizal.springrecipe.domain.Difficulty).values()}"
+												th:each="difficultyValue : ${T(com.github.recipe.app.domain.Difficulty).values()}"
 												th:value="${difficultyValue.name()}"
 												th:text="${difficultyValue.name()}">val</option>
 										</select> <select class="form-control" th:remove="all">

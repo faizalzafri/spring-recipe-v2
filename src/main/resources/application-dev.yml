@@ -17,7 +17,7 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     database: postgresql
     show-sql: true
-    open-in-view: false
+    open-in-view: true
 
 logging:
   level:

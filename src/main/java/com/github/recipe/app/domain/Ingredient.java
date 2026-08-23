@@ -10,10 +10,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.EqualsAndHashCode;
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(exclude = { "recipe" })
 @Entity
 public class Ingredient {
@@ -24,7 +26,7 @@ public class Ingredient {
 	private String description;
 	private BigDecimal amount;
 
-	@OneToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER)
 	private UnitOfMeasure uom;
 
 	@ManyToOne
