@@ -22,4 +22,4 @@ spring:
 logging:
   level:
     root: INFO
-    com.faizal.springrecipe: INFO
+    com.github.recipe.app: INFO

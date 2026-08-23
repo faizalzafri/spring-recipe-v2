@@ -9,7 +9,7 @@
 		<version>3.4.3</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.faizal</groupId>
+	<groupId>com.github.recipe</groupId>
 	<artifactId>spring-recipe-jpa-postgres</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-recipe-jpa-postgres</name>

@@ -34,5 +34,5 @@ management:
 logging:
   level:
     root: INFO
-    com.faizal.springrecipe: DEBUG
+    com.github.recipe.app: DEBUG
     org.springframework.web: INFO
