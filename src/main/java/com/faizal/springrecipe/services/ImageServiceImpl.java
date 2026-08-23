@@ -2,7 +2,7 @@ package com.faizal.springrecipe.services;
 
 import java.io.IOException;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

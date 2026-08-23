@@ -15,12 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @Profile({ "dev", "prod" })
-public class BootStrapMySQL implements ApplicationListener<ContextRefreshedEvent> {
+public class BootStrapPostgres implements ApplicationListener<ContextRefreshedEvent> {
 
 	private final CategoryRepository categoryRepository;
 	private final UnitOfMeasureRepository unitOfMeasureRepository;
 
-	public BootStrapMySQL(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
+	public BootStrapPostgres(CategoryRepository categoryRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
 		this.categoryRepository = categoryRepository;
 		this.unitOfMeasureRepository = unitOfMeasureRepository;
 	}

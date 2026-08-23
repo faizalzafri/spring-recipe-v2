@@ -1,11 +1,11 @@
-# Spring Recipe Application - Stage 2 (Multi-Environment & Production RDBMS)
+# Spring Recipe Application - Multi-Environment & PostgreSQL (`spring-recipe-jpa-postgres`)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Java Version](https://img.shields.io/badge/Java-8%20%2F%2017%20%2F%2021-blue.svg)](pom.xml)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.0.8.RELEASE-brightgreen.svg)](pom.xml)
-[![Database](https://img.shields.io/badge/Database-MySQL%208%20%2F%20H2-orange.svg)](src/main/resources/sql-scripts)
+[![Java Version](https://img.shields.io/badge/Java-21-blue.svg)](pom.xml)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.3-brightgreen.svg)](pom.xml)
+[![Database](https://img.shields.io/badge/Database-PostgreSQL%2016%20%2F%20H2-blue.svg)](src/main/resources/sql-scripts)
 
-An enterprise reference implementation building upon Stage 1 by introducing multi-environment configuration profiles (`default`, `dev`, `prod`), persistent MySQL database integration, HikariCP connection pool hardening, and containerized multi-tier orchestration.
+An enterprise reference implementation building upon Stage 1 by introducing multi-environment configuration profiles (`default`, `dev`, `prod`), persistent **PostgreSQL 16** database integration, HikariCP connection pool hardening, and containerized multi-tier orchestration.
 
 ---
 
@@ -23,8 +23,8 @@ An enterprise reference implementation building upon Stage 1 by introducing mult
                                |                 |                  |
                                v                 v                  v
                        +---------------+  +--------------+  +---------------+
-                       | In-Memory H2  |  | MySQL (Dev)  |  | MySQL (Prod)  |
-                       | Auto-schema   |  | DDL: update  |  | DDL: validate |
+                       | In-Memory H2  |  | Postgres Dev |  | Postgres Prod |
+                       | Auto-schema   |  | DDL: update  |  | DDL: update   |
                        | Bootstrap All |  | Seed Lookups |  | Seed Lookups  |
                        +---------------+  +--------------+  +---------------+
 ```
@@ -32,19 +32,19 @@ An enterprise reference implementation building upon Stage 1 by introducing mult
 ### Key Production Concepts Demonstrated
 1. **Environment Segregation**:
    - `default`: In-memory H2 with full sample recipe bootstrap for rapid local iteration.
-   - `dev`: MySQL (`recipe_dev`) with schema update and debug SQL logging.
-   - `prod`: MySQL (`recipe_prod`) with strict schema validation (`ddl-auto: validate`), disabled debug logs, and hardened Hikari connection pool limits.
+   - `dev`: PostgreSQL (`recipe_dev`) with schema update and debug SQL logging.
+   - `prod`: PostgreSQL (`recipe_prod`) with hardened Hikari connection pool limits.
 2. **Connection Pool Optimization (HikariCP)**: Explicit pool tuning parameters (`maximum-pool-size`, `minimum-idle`, `connection-timeout`, `leak-detection-threshold`).
 3. **Externalized 12-Factor Configuration**: Environment variables (`DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`) with safe defaults.
-4. **Container Healthcheck Synchronization**: Docker Compose services orchestrated via health checks to prevent application startup before the database is ready.
+4. **Container Healthcheck Synchronization**: Docker Compose PostgreSQL 16 service orchestrated via health checks (`pg_isready`) before launching the application.
 
 ---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- **JDK**: Java 8, 17, or 21
-- **Maven**: 3.6+ (or use the included `./mvnw`)
+- **JDK**: Java 21
+- **Maven**: 3.9+ (or use the included `./mvnw`)
 - **Docker & Docker Compose**
 
 ---
@@ -57,7 +57,7 @@ An enterprise reference implementation building upon Stage 1 by introducing mult
 .\mvnw.cmd clean spring-boot:run
 ```
 
-#### Option B: Run with Dev Profile (Requires local MySQL running)
+#### Option B: Run with Dev Profile (Requires local PostgreSQL)
 ```bash
 .\mvnw.cmd clean spring-boot:run -Dspring-boot.run.profiles=dev
 ```
@@ -71,7 +71,7 @@ An enterprise reference implementation building upon Stage 1 by introducing mult
 
 ### 🐳 Full Stack Docker Deployment
 
-Spin up both the MySQL 8 database (with auto-provisioned schema and users) and the Spring Boot application in synchronized containers:
+Spin up both PostgreSQL 16 (with auto-provisioned databases/roles) and the Spring Boot application in synchronized containers:
 
 ```bash
 # Build and run the full stack

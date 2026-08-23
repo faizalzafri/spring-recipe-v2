@@ -4,11 +4,11 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,39 +19,38 @@ import com.faizal.springrecipe.commands.RecipeCommand;
 import com.faizal.springrecipe.services.ImageService;
 import com.faizal.springrecipe.services.RecipeService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class ImageController {
 
-	private ImageService imageService;
-	private RecipeService recipeService;
+	private final ImageService imageService;
+	private final RecipeService recipeService;
 
 	public ImageController(ImageService imageService, RecipeService recipeService) {
-		super();
 		this.imageService = imageService;
 		this.recipeService = recipeService;
 	}
 
 	@PostMapping("recipe/{id}/image")
 	public String handleImagePost(@PathVariable("id") String id, @RequestParam("imagefile") MultipartFile file) {
-
+		log.debug("Handling image upload for recipe id: {}", id);
 		imageService.save(Long.valueOf(id), file);
-
 		return "redirect:/recipe/" + id + "/show";
-
 	}
 
 	@GetMapping("/recipe/{id}/image")
 	public String showUploadForm(@PathVariable String id, Model model) {
-		model.addAttribute("recipe", recipeService.findCommandById(new Long(id)));
+		model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
 		return "recipe/imageuploadform";
 	}
 
 	@GetMapping("/recipe/{id}/recipeimage")
 	public void renderImageFromDb(@PathVariable String id, HttpServletResponse response) throws IOException {
+		RecipeCommand reCommand = recipeService.findCommandById(Long.valueOf(id));
 
-		RecipeCommand reCommand = recipeService.findCommandById(Long.parseLong(id));
-
-		if (reCommand.getImage() != null) {
+		if (reCommand != null && reCommand.getImage() != null) {
 			byte[] byteArray = new byte[reCommand.getImage().length];
 			int i = 0;
 
@@ -61,7 +60,7 @@ public class ImageController {
 
 			response.setContentType("image/jpeg");
 			InputStream is = new ByteArrayInputStream(byteArray);
-			IOUtils.copy(is, response.getOutputStream());
+			StreamUtils.copy(is, response.getOutputStream());
 		}
 	}
 }

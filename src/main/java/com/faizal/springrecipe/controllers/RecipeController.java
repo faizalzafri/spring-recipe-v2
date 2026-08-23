@@ -1,6 +1,6 @@
 package com.faizal.springrecipe.controllers;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,7 +29,7 @@ public class RecipeController {
 
 	@GetMapping(value = "/recipe/{id}/show")
 	public String showRecipe(@PathVariable("id") String id, Model model) {
-		Recipe recipe = recipeService.findById(Long.parseLong(id));
+		Recipe recipe = recipeService.findById(Long.valueOf(id));
 		model.addAttribute("recipe", recipe);
 		return "recipe/show";
 	}
@@ -42,14 +42,14 @@ public class RecipeController {
 
 	@GetMapping(value = "/recipe/{id}/update")
 	public String updateRecipeForm(@PathVariable("id") String id, Model model) {
-		model.addAttribute("recipe", recipeService.findCommandById(Long.parseLong(id)));
+		model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
 		return RECIPE_RECIPEFORM_URL;
 	}
 
 	@GetMapping(value = "/recipe/{id}/delete")
 	public String deleteRecipe(@PathVariable("id") String id) {
 		log.debug("Deleting recipe with id: {}", id);
-		recipeService.deleteById(Long.parseLong(id));
+		recipeService.deleteById(Long.valueOf(id));
 		return "redirect:/";
 	}
 
